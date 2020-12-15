@@ -1,0 +1,128 @@
+import pygame
+import time
+import smtplib
+from email.message import EmailMessage
+
+
+pygame.init()
+run=True
+screen_width = 800
+screen_height = 600
+screen = pygame.display.set_mode((screen_width, screen_height))
+scree_color = (0,255,13)
+button_color_1 = (0,149,112)
+button_color_2 = (0 ,149,112)
+p1X = 270
+p1Y = 340
+p2x = 490
+p2Y = 300   
+font = pygame.font.Font('freesansbold.ttf',32)
+inp = ''
+time = ''
+sent = '12'
+message_sent = 0
+klick = 0
+cursor = 0
+def text_screen(text,color,x,y):
+    screen_text = font.render(text,True,color)
+    screen.blit(screen_text,[x,y])
+
+
+
+
+
+def email_alert(subject,body,to):
+    msg = EmailMessage()
+    msg.set_content(body)
+    msg['subject'] = subject
+    msg['to'] = to
+    user = "python.bot75@gmail.com"
+    msg['from'] = user
+    password = "adyaesziprmhepwg"
+    server = smtplib.SMTP("smtp.gmail.com",587)
+    server.starttls()
+    server.login(user,password )
+    server.send_message(msg)
+    server.quit()   
+
+
+
+
+
+
+
+while run:
+    screen.fill(scree_color)
+    mx,my = pygame.mouse.get_pos() 
+    pygame.draw.rect(screen, button_color_1,(p1X,p1Y,200,130))
+    # pygame.draw.rect(screen, button_color_2,(p2x,p2Y,200,130))
+    text_screen("  SEND ",(0,0,255),290,350)
+    text_screen("MESSAGE!",(0,0,255),280,399)
+    # text_screen("ONLY 1",(0,0,255),515,330)
+    # text_screen("TIME",(0,0,255),530,380)
+    text_screen("EMAIL(RECIVERS EMAIL) :- ",(100,100,100),5,5)
+    text_screen(inp,(0,0,0),20,40)
+    text_screen("MESSAGE :",(100,100,100),5,200)
+    text_screen(time,(0,0,0),170,200)
+
+
+
+
+
+    # print_text(100,330,"EVERY 'X' ")
+    # print_text(100,360,"MINUTES")
+    # print_text(490,350,'ONLY 1 TIME')
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+        if event.type == pygame.KEYDOWN:
+            if cursor == 0:
+                inp+=event.unicode
+            if event.key == pygame.K_BACKSPACE and cursor == 0:
+                inp = inp[:-1]
+            if event.key == pygame.K_RETURN:
+                cursor = 1
+            if cursor == 1:
+                if event.key == pygame.K_BACKSPACE and cursor == 1:
+                    time = time[:-1]
+                time+=event.unicode
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                if(mx>=p1X and mx<=p1X+200) and (my>=p1Y and my<=p1Y+130):
+                    # button_color_1 = (255,0,0)
+                    if __name__ == "__main__":
+                        email_alert("MAIL THROUGH PYTHON",str(time),str(inp))
+                        message_sent = 1
+                else:
+                    button_color_1 = (0,149,112)
+    
+                
+            
+
+    # print(inp)
+    # print("TIME",time)
+
+
+
+    if(mx>=p1X and mx<=p1X+200) and (my>=p1Y and my<=p1Y+130):
+        button_color_1 = (255,0,0)
+    else:
+        button_color_1 = (0,149,112)
+    
+    if message_sent == 1:
+        text_screen('Mail has been sent on the given email address!',(25, 117, 202),55,490)
+    
+    # if(mx>=p2x and mx<=p2x+200) and (my>=p2Y and my<=p2Y+130):
+    #     # print('YEs')
+    #     button_color_2 = (255,0,0)
+        
+    # else:   
+    #     button_color_2 = (0,149,112)
+    # print_text(150,150,str(msgee))
+
+    
+    if sent==inp:
+        for x in range(99):
+            print('yes')
+    pygame.display.update()
+
